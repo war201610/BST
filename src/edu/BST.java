@@ -110,18 +110,6 @@ public class BST {
 			return node;
 	}
 
-	private Node getNode(Node node, Key key) {
-		if (node == null)
-			return null;
-		int cmp = node.key.compareTo(key);
-		if (cmp > 0)
-			return getNode(node.left, key);
-		else if (cmp < 0)
-			return getNode(node.right, key);
-		else
-			return node;
-	}
-
 	public Key max() {
 		return max(root).key;
 	}
@@ -138,22 +126,47 @@ public class BST {
 		return node.left == null ? node : min(node.left);
 	}
 
-	public Key ceiling(Key key) {
-		Node target = getNode(root, key);
-		if (target == null) {
-			System.out.println("key not found");
-			return null;
-		}
-		return min(target.right).key;
-	}
-
+	//向上下取整, 书上原话
+	//如果给定的键key小于二叉查找树的根结点的键, 那么小于等于key的最大键floor(key)一定在
+	//根节点的左子树中; 如果给定的键key大于二叉查找树的根结点, 那么只有当根结点右子树中存在
+	//小于等于key的结点时, 小于等于key的最大键才会出现在右子树中, 否则根结点就是小于等于key
+	//的最大键
 	public Key floor(Key key) {
-		Node target = getNode(root, key);
-		if (target == null) {
-			System.out.println("key not found");
+		Node node = floor(root, key);
+		if(node == null)
 			return null;
-		}
-		return max(target.left).key;
+		return node.key;
+	}
+	
+	private Node floor(Node node, Key key) {
+		if(node == null)
+			return null;
+		int cmp = key.compareTo(node.key);
+		if(cmp == 0)
+			return node;
+		if(cmp < 0)
+			return floor(node.left, key);
+		Node t = floor(node.right, key);
+		return t != null ? t : node;
+	}
+	
+	public Key ceiling(Key key) {
+		Node node = ceiling(root, key);
+		if(node == null)
+			return null;
+		return node.key;
+	}
+	
+	private Node ceiling(Node node, Key key) {
+		if(node == null)
+			return null;
+		int cmp = key.compareTo(node.key);
+		if(cmp == 0)
+			return node;
+		if(cmp > 0)
+			return ceiling(node.right, key);
+		Node t = ceiling(node.left, key);
+		return t != null ? t : node;
 	}
 
 	public int rank(int r) {
@@ -270,7 +283,7 @@ public class BST {
 		midPrint(root);
 	}
 	
-	public void midPrint(Node node) {
+	private void midPrint(Node node) {
 		if(node == null)
 			return;
 		midPrint(node.left);
