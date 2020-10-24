@@ -46,7 +46,7 @@ public class BST {
 		return node.n;
 	}
 
-	// Ê¹ÓÃputµÄÊ±ºò²»ĞèÒª·µ»ØÖµ, Ê¹ÓÃÕâÑùµ÷ÓÃ¿ÉÒÔÒş²Øº¯Êıµ÷ÓÃ, Ò²¿ÉÒÔÈÃµ÷ÓÃ¼ò½à
+	// ä½¿ç”¨putçš„æ—¶å€™ä¸éœ€è¦è¿”å›å€¼, ä½¿ç”¨è¿™æ ·è°ƒç”¨å¯ä»¥éšè—å‡½æ•°è°ƒç”¨, ä¹Ÿå¯ä»¥è®©è°ƒç”¨ç®€æ´
 	public void put(Key key, Integer value) {
 		put(root, key, value);
 	}
@@ -71,7 +71,7 @@ public class BST {
 		return null;
 	}
 
-	// ÏÂÃæÊÇÊéÉÏµÄÄÚÈİ
+	// ä¸‹é¢æ˜¯ä¹¦ä¸Šçš„å†…å®¹
 //	public Node push1(Node node, Key key, Integer value) {
 //		if (node == null) 
 //			return new Node(key, value);
@@ -184,7 +184,7 @@ public class BST {
 			return node;
 	}
 
-	// node.left = deleteMin(node.left)É¾³ıºóÒª¸üĞÂÔ­¸¸½ÚµãµÄ×ó×ÓÊ÷
+	// node.left = deleteMin(node.left)åˆ é™¤åè¦æ›´æ–°åŸçˆ¶ç»“ç‚¹çš„å·¦å­æ ‘
 	public void deleteMin() {
 		root = deleteMin(root);
 	}
@@ -230,9 +230,9 @@ public class BST {
 				return node.right;
 			if (node.right == null)
 				return node.left;
-			Node t = node;//±£´æÒªÉ¾³ıµÄ½ÚµãĞÅÏ¢
-			node = min(node.right);//ÕÒµ½ºó¼Ì½áµã, ¾ÍÊÇÓÒ×ÓÊ÷µÄ×îĞ¡½áµã
-			node.right = deleteMin(t.right);//É¾³ıÓÒ×ÓÊ÷×îĞ¡½áµã, °ÑÔ­ÓÒ×ÓÊ÷¸³¸øºó¼Ì½áµã
+			Node t = node;//ä¿å­˜è¦åˆ é™¤çš„èŠ‚ç‚¹ä¿¡æ¯
+			node = min(node.right);//æ‰¾åˆ°åç»§ç»“ç‚¹, å°±æ˜¯å³å­æ ‘çš„æœ€å°ç»“ç‚¹
+			node.right = deleteMin(t.right);//åˆ é™¤å³å­æ ‘æœ€å°ç»“ç‚¹, æŠŠåŸå³å­æ ‘èµ‹ç»™åç»§ç»“ç‚¹
 			node.left = t;
 		}
 		node.n = size(node.left) + size(node.right) + 1;
