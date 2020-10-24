@@ -1,5 +1,9 @@
 package edu;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+
 class Node {
 	public Key key;
 	public Integer value;
@@ -233,10 +237,45 @@ public class BST {
 			Node t = node;//保存要删除的节点信息
 			node = min(node.right);//找到后继结点, 就是右子树的最小结点
 			node.right = deleteMin(t.right);//删除右子树最小结点, 把原右子树赋给后继结点
-			node.left = t;
+			node.left = t.left;
 		}
 		node.n = size(node.left) + size(node.right) + 1;
 		return node;
+	}
+	
+	public Iterator<Key> keys() {
+		return keys(min(), max());
+	}
+	
+	public Iterator<Key> keys(Key lo, Key hi) {
+		Queue<Key> q = new LinkedList<Key>();
+		keys(root, q, lo, hi);
+		return q.iterator();
+	}
+	
+	private void keys(Node node, Queue<Key> queue, Key lo, Key hi) {
+		if(node == null)
+			return;
+		int cmplo = lo.compareTo(node.key);
+		int cmphi = hi.compareTo(node.key);
+		if(cmplo < 0)
+			keys(node.left, queue, lo, hi);
+		if(cmplo <= 0 && cmphi >=0)
+			queue.add(node.key);
+		if(cmphi > 0)
+			keys(node.right, queue, lo, hi);
+	}
+	
+	public void midPrint() {
+		midPrint(root);
+	}
+	
+	public void midPrint(Node node) {
+		if(node == null)
+			return;
+		midPrint(node.left);
+		System.out.println(node.value);
+		midPrint(node.right);
 	}
 
 	public void printTree() {
