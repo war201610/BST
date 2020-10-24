@@ -35,13 +35,13 @@ public class BST {
 		root.left = null;
 		root.right = null;
 	}
-	
+
 	public int size() {
 		return size(root);
 	}
-	
+
 	private int size(Node node) {
-		if(node == null)
+		if (node == null)
 			return 0;
 		return node.n;
 	}
@@ -151,18 +151,18 @@ public class BST {
 		}
 		return max(target.left).key;
 	}
-	
+
 	public int rank(int r) {
 		return rank(root, r);
 	}
-	
+
 	private int rank(Node node, int r) {
-		if(node == null)
+		if (node == null)
 			return 0;
 		int cmp = node.key.compareTo(new Key(r));
-		if(cmp > 0)
+		if (cmp > 0)
 			return rank(node.left, r);
-		else if(cmp < 0)
+		else if (cmp < 0)
 			return 1 + size(node.left) + rank(node.right, r);
 		else
 			return size(node.left);
@@ -171,20 +171,74 @@ public class BST {
 	public Key select(int r) {
 		return select(root, r).key;
 	}
-	
+
 	public Node select(Node node, int r) {
-		if(node == null)
+		if (node == null)
 			return null;
 		int t = size(node.left);
-		if(t > r)
+		if (t > r)
 			return select(node.left, r);
-		else if(t < r)
+		else if (t < r)
 			return select(node.right, r - t - 1);
 		else
 			return node;
 	}
-	
-	
+
+	// node.left = deleteMin(node.left)删除后要更新原父节点的左子树
+	public void deleteMin() {
+		root = deleteMin(root);
+	}
+
+	private Node deleteMin(Node node) {
+		if (node.left == null)
+			return node.right;
+		else {
+			node.left = deleteMin(node.left);
+			node.n = size(node.left) + size(node.right) + 1;
+			return node;
+		}
+	}
+
+	public void deleteMax() {
+		root = deleteMax(root);
+	}
+
+	private Node deleteMax(Node node) {
+		if (node.right == null)
+			return node.left;
+		else {
+			node.right = deleteMax(node.right);
+			node.n = size(node.left) + size(node.right) + 1;
+			return node;
+		}
+	}
+
+	public void delete(Key key) {
+		root = delete(root, key);
+	}
+
+	private Node delete(Node node, Key key) {
+		if (node == null)
+			return null;
+		int cmp = node.key.compareTo(key);
+		if (cmp > 0)
+			node.left = delete(node.left, key);
+		else if (cmp < 0)
+			node.right = delete(node.right, key);
+		else {
+			if (node.left == null)
+				return node.right;
+			if (node.right == null)
+				return node.left;
+			Node t = node;//保存要删除的节点信息
+			node = min(node.right);//找到后继结点, 就是右子树的最小结点
+			node.right = deleteMin(t.right);//删除右子树最小结点, 把原右子树赋给后继结点
+			node.left = t;
+		}
+		node.n = size(node.left) + size(node.right) + 1;
+		return node;
+	}
+
 	public void printTree() {
 		printTree(root);
 	}
